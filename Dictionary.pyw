@@ -1,19 +1,19 @@
 import tkinter as tk
-from tkinter_place import CustomPlace
 from tkinter import messagebox
-import threading, os, json
+import os, json
 
 class mainApplication:
 	def __init__(self,screen):
 		self.screen = screen
 		self.window_width = 400
 		self.window_height = 200
+		self.screen.iconbitmap("dict_icon.ico")
 
 		self.screen.title("Dictionary")
 		self.screen.minsize(self.window_width,self.window_height)
-		self.cp = CustomPlace(self.window_width,self.window_height)
 		self.update()
 		self.screen.bind("<Return>",lambda event: self.search())
+		self.screen.bind("<Escape>",lambda event: self.clear())
 
 	def container(self):
 		self.container1 = tk.Frame(self.screen, height = self.window_height, width = self.window_width)
@@ -83,9 +83,6 @@ class mainApplication:
 		self.window_height = 80 + (line_count+1)*20
 		self.set_window()
 
-	def results(self):
-		meaning = tk.Label(self.screen, text = f"Meaning: {self.word.get()}")
-
 	def set_window(self):
 		screen_width = self.screen.winfo_screenwidth()
 		screen_height = self.screen.winfo_screenheight()
@@ -93,13 +90,15 @@ class mainApplication:
 		center_y = screen_height//2 - self.window_height//2
 		self.screen.geometry(f"{self.window_width}x{self.window_height}+{center_x}+{center_y}")
 
+	def clear(self):
+		self.word.set("")
 
 	def update(self):
 		self.set_window()
 		self.container()
 		self.search_bar()
 		self.go_button()
-		self.results()
+
 
 
 if __name__ == '__main__':
